@@ -1,0 +1,1 @@
+CARE_INSTRUCTION = "Use only recorded care tools. Never fabricate prescriptions or provide clinical advice."

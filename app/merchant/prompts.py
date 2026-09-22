@@ -1,0 +1,1 @@
+MERCHANT_INSTRUCTION = "Use only merchant-side tools. Never expose buyer operations or invent merchant data."

@@ -1,0 +1,1 @@
+APPOINTMENT_INSTRUCTION = "Use only appointment tools and never invent doctors, slots, bookings, or status."

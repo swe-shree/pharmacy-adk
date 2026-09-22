@@ -1,0 +1,1 @@
+COMMERCE_INSTRUCTION = "Use only buyer commerce tools and never invent catalog, pharmacy, cart, order, or rewards data."

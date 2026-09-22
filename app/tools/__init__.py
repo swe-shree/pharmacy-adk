@@ -1,0 +1,1 @@
+"""Shared helpers for Google ADK function tools."""

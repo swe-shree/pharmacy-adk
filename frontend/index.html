@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Assistant - Pharmacy AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M2 12h20"></path>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-title">Medical Assistant</h1>
+            <span class="brand-badge">Online</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button type="button" id="cart-btn" class="cart-button" aria-label="Open Cart" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="cart-btn-label">Cart</span>
+            <span id="cart-badge" class="cart-badge">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-layout">
+      <div class="layout-wrapper">
+
+        <!-- Assistant / Chat Area -->
+        <section class="card chat-card">
+          <div class="chat-header">
+            <div class="chat-header-title">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span>Assistant</span>
+            </div>
+            <div class="chat-header-actions">
+              <span id="voice-status-pill" class="voice-status-pill state-stopped" role="status" aria-live="polite">
+                <span class="pill-dot" aria-hidden="true"></span>
+                <span id="voice-status-text">Voice off</span>
+              </span>
+              <button type="button" id="reset-chat-btn" class="reset-chat-btn" title="Reset conversation">
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Scrollable Conversation Stream -->
+          <div class="chat-stream" id="chat-stream" role="log" aria-live="polite">
+            <div class="chat-bubble-wrapper assistant">
+              <div class="avatar assistant-avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v20M2 12h20"></path>
+                </svg>
+              </div>
+              <div class="bubble-layout">
+                <span class="sender-name">Medical Assistant</span>
+                <div class="bubble-text">Hi! How can I help you today?</div>
+                <time class="message-timestamp" id="initial-timestamp"></time>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typing / Loading State Indicator -->
+          <div id="typing-indicator" class="chat-bubble-wrapper assistant typing-row" hidden aria-hidden="true">
+            <div class="avatar assistant-avatar">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="9"></circle>
+              </svg>
+            </div>
+            <div class="typing-pill">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <!-- Chat Input Area -->
+          <form class="chat-form" id="chat-form" autocomplete="off">
+            <button type="button" id="input-mic-btn" class="form-btn mic-btn" aria-label="Toggle voice" title="Toggle voice" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+
+            <input
+              type="text"
+              id="message-input"
+              class="search-input"
+              placeholder="Ask about a medicine, your cart, or an order..."
+              aria-label="Ask medical assistant"
+              autocomplete="off"
+            />
+
+            <button type="submit" id="send-btn" class="form-btn send-btn" aria-label="Send message" title="Send message" disabled>
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Toast -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Cart Modal / Side Panel -->
+    <div id="cart-backdrop" class="cart-backdrop" aria-hidden="true"></div>
+
+    <aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-heading" aria-hidden="true">
+      <div class="cart-drawer-header">
+        <div class="cart-heading-group">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <h2 id="cart-heading" class="cart-title">Your Cart</h2>
+          <span id="cart-items-count" class="cart-items-count">(0)</span>
+        </div>
+        <button type="button" id="cart-close-btn" class="cart-close-btn" aria-label="Close cart">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="cart-drawer-body">
+        <div id="empty-cart-view" class="empty-cart-view">
+          <div class="empty-cart-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+          <h3 class="empty-cart-title">Your cart is empty</h3>
+          <p class="empty-cart-sub">Items added to your cart will appear here.</p>
+        </div>
+
+        <div id="cart-items-list" class="cart-items-list" hidden></div>
+      </div>
+
+      <div class="cart-drawer-footer" id="cart-footer" hidden>
+        <div class="cart-subtotal-line">
+          <span>Subtotal</span>
+          <span id="cart-subtotal-amount" class="subtotal-amount">--</span>
+        </div>
+        <button type="button" id="checkout-btn" class="checkout-button">
+          Proceed to Checkout
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
